@@ -4,7 +4,7 @@ public class Main {
     public static void main(String[] args) {
         System.out.println("Gold Rush");
         
-        Board board = new Board(10);
+        Board board = new Board(8);
         
         Token gold = new Token("G");
         Token player = new Token("P");
