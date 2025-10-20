@@ -1,1 +1,0 @@
-# gold__rush
