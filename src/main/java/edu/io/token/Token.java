@@ -1,6 +1,6 @@
 package edu.io.token;
 
-public class Token {
+public abstract class Token {
     public final String label;
     
     public Token(String symbol) {
@@ -20,15 +20,15 @@ public class Token {
     }
     
     public static Token createEmpty() {
-        return new Token("・");
+        return new EmptyToken();
     }
     
     public static Token createGold() {
-        return new Token("💰︎");
+        return new GoldToken();
     }
     
     public static Token createPlayer() {
-        return new Token("웃");
+        return new PlayerToken();
     }
     
     public boolean isEmpty() {
@@ -36,7 +36,7 @@ public class Token {
     }
     
     public boolean isGold() {
-        return "💰︎".equals(label);
+        return "💰".equals(label);
     }
     
     public boolean isPlayer() {
