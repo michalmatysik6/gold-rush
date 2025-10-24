@@ -1,15 +1,21 @@
 package edu.io;
 
 import edu.io.token.Token;
+import edu.io.token.EmptyToken;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public class Board {
     public record Coords(int col, int row) {}
     
-    public final int size = 8;
+    private final int size = 8;
     private final Token[][] grid;
+    private final Random random;
     
     public Board() {
         this.grid = new Token[size][size];
+        this.random = new Random();
         clear();
     }
     
@@ -44,13 +50,30 @@ public class Board {
         return peekToken(col, row);
     }
     
-    // DODANE DLA TESTÓW
     public Token square(int col, int row) {
         return peekToken(col, row);
     }
     
     public boolean isValidPos(int col, int row) {
         return col >= 0 && col < size && row >= 0 && row < size;
+    }
+    
+    public Coords getAvailableSquare() {
+        List<Coords> emptySquares = new ArrayList<>();
+        
+        for (int row = 0; row < size; row++) {
+            for (int col = 0; col < size; col++) {
+                if (grid[col][row] instanceof EmptyToken) {
+                    emptySquares.add(new Coords(col, row));
+                }
+            }
+        }
+        
+        if (emptySquares.isEmpty()) {
+            throw new IllegalStateException("Brak pustych pól na planszy");
+        }
+        
+        return emptySquares.get(random.nextInt(emptySquares.size()));
     }
     
     public void display() {

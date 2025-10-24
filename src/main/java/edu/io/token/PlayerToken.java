@@ -1,6 +1,7 @@
 package edu.io.token;
 
 import edu.io.Board;
+import edu.io.Player;
 
 public class PlayerToken extends Token {
     private Board board;
@@ -13,6 +14,14 @@ public class PlayerToken extends Token {
     
     public PlayerToken() {
         super("웃");
+    }
+    
+    public PlayerToken(Player player, Board board) {
+        super("웃");
+        this.board = board;
+        this.col = 0;
+        this.row = 0;
+        board.placeToken(col, row, this);
     }
     
     public PlayerToken(Board board) {
@@ -44,7 +53,7 @@ public class PlayerToken extends Token {
         }
         
         if (!board.isValidPos(newCol, newRow)) {
-            throw new IllegalArgumentException("Cannot move outside board");
+            throw new IllegalArgumentException("Nie można wyjść poza planszę");
         }
         
         board.placeToken(col, row, new EmptyToken());
