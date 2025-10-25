@@ -1,22 +1,22 @@
 package edu.io;
 
 import edu.io.token.Token;
-import edu.io.token.EmptyToken;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 public class Board {
     public record Coords(int col, int row) {}
     
     private final int size = 8;
     private final Token[][] grid;
-    private final Random random;
+    private PlacementStrategy placementStrategy;
     
     public Board() {
         this.grid = new Token[size][size];
-        this.random = new Random();
+        this.placementStrategy = new SimplePlacement();
         clear();
+    }
+    
+    public void setPlacementStrategy(PlacementStrategy strategy) {
+        this.placementStrategy = strategy;
     }
     
     public void clear() {
@@ -58,22 +58,8 @@ public class Board {
         return col >= 0 && col < size && row >= 0 && row < size;
     }
     
-    public Coords getAvailableSquare() {
-        List<Coords> emptySquares = new ArrayList<>();
-        
-        for (int row = 0; row < size; row++) {
-            for (int col = 0; col < size; col++) {
-                if (grid[col][row] instanceof EmptyToken) {
-                    emptySquares.add(new Coords(col, row));
-                }
-            }
-        }
-        
-        if (emptySquares.isEmpty()) {
-            throw new IllegalStateException("Brak pustych pól na planszy");
-        }
-        
-        return emptySquares.get(random.nextInt(emptySquares.size()));
+    public Board.Coords getAvailableSquare() {
+        return placementStrategy.findEmptySpot(this);
     }
     
     public void display() {
