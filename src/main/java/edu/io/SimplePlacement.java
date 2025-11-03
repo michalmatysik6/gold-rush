@@ -3,9 +3,11 @@ package edu.io;
 import edu.io.token.EmptyToken;
 
 public class SimplePlacement implements PlacementStrategy {
-    public Board.Coords findEmptySpot(Board board) {
-        for (int row = 0; row < board.size(); row++) {
-            for (int col = 0; col < board.size(); col++) {
+    @Override
+    public Board.Coords place(Board board) {
+        int size = board.size();
+        for (int row = 0; row < size; row++) {
+            for (int col = 0; col < size; col++) {
                 if (board.peekToken(col, row) instanceof EmptyToken) {
                     return new Board.Coords(col, row);
                 }

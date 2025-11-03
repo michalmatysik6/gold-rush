@@ -1,7 +1,10 @@
 package edu.io.token;
 
+import edu.io.Label;
+
 public class EmptyToken extends Token {
-    public EmptyToken() {
-        super("・");
+    @Override
+    public Label label() {
+        return Label.EMPTY_TOKEN_LABEL;
     }
 }

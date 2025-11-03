@@ -1,5 +1,5 @@
 package edu.io;
 
 public interface PlacementStrategy {
-    Board.Coords findEmptySpot(Board board);
+    Board.Coords place(Board board);
 }

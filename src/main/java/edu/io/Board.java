@@ -1,95 +1,67 @@
 package edu.io;
 
+import edu.io.token.EmptyToken;
 import edu.io.token.Token;
 
 public class Board {
-    public record Coords(int col, int row) {}
-    
-    private final int size = 8;
-    private final Token[][] grid;
-    private PlacementStrategy placementStrategy;
-    
+    private static final int SIZE = 8;
+    private final Token[][] grid = new Token[SIZE][SIZE];
+    private PlacementStrategy placementStrategy = new SimplePlacement();
+
     public Board() {
-        this.grid = new Token[size][size];
-        this.placementStrategy = new SimplePlacement();
-        clear();
+        for (int row = 0; row < SIZE; row++) {
+            for (int col = 0; col < SIZE; col++) {
+                grid[row][col] = new EmptyToken();
+            }
+        }
     }
-    
+
     public void setPlacementStrategy(PlacementStrategy strategy) {
         this.placementStrategy = strategy;
     }
-    
-    public void clear() {
-        Token empty = Token.createEmpty();
-        for (int row = 0; row < size; row++) {
-            for (int col = 0; col < size; col++) {
-                grid[col][row] = empty;
+
+    public boolean isValidPos(int col, int row) {
+        return col >= 0 && col < SIZE && row >= 0 && row < SIZE;
+    }
+
+    public void clean() {
+        for (int row = 0; row < SIZE; row++) {
+            for (int col = 0; col < SIZE; col++) {
+                grid[row][col] = new EmptyToken();
             }
         }
     }
-    
-    public void clean() {
-        clear();
-    }
-    
+
     public void placeToken(int col, int row, Token token) {
         if (!isValidPos(col, row)) {
-            throw new IllegalArgumentException("Niedozwolona pozycja: " + col + ", " + row);
+            throw new IllegalArgumentException("Nieprawidłowa pozycja: " + col + ", " + row);
         }
-        grid[col][row] = token;
+        grid[row][col] = token;
     }
-    
+
     public Token peekToken(int col, int row) {
         if (!isValidPos(col, row)) {
-            throw new IllegalArgumentException("Niedozwolona pozycja: " + col + ", " + row);
+            throw new IllegalArgumentException("Nieprawidłowa pozycja: " + col + ", " + row);
         }
-        return grid[col][row];
+        return grid[row][col];
     }
-    
-    public Token getSquare(int col, int row) {
-        return peekToken(col, row);
+
+    public int size() {
+        return SIZE;
     }
-    
-    public Token square(int col, int row) {
-        return peekToken(col, row);
+
+    public Coords getAvailableSquare() {
+        return placementStrategy.place(this);
     }
-    
-    public boolean isValidPos(int col, int row) {
-        return col >= 0 && col < size && row >= 0 && row < size;
-    }
-    
-    public Board.Coords getAvailableSquare() {
-        return placementStrategy.findEmptySpot(this);
-    }
-    
+
     public void display() {
-        System.out.println("Plansza 'Gold Rush' 8x8:");
-        System.out.println("____________________________");
-        for (int row = 0; row < size; row++) {
-            for (int col = 0; col < size; col++) {
-                System.out.print(grid[col][row].display() + " ");
+        for (int row = 0; row < SIZE; row++) {
+            for (int col = 0; col < SIZE; col++) {
+                System.out.print(grid[row][col].label() + " ");
             }
             System.out.println();
         }
-        System.out.println();
     }
-    
-    public int size() {
-        return size;
-    }
-    
-    public int getSize() {
-        return size;
-    }
-    
-    public int[] findPlayer() {
-        for (int row = 0; row < size; row++) {
-            for (int col = 0; col < size; col++) {
-                if (grid[col][row].isPlayer()) {
-                    return new int[]{col, row};
-                }
-            }
-        }
-        return new int[]{-1, -1};
-    }
+
+    public record Coords(int col, int row) {}
 }
