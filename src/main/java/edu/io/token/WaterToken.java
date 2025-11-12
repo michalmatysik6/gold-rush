@@ -9,7 +9,7 @@ public class WaterToken extends Token {
 
     public WaterToken(int amount) {
         if (amount < 0 || amount > 100) {
-            throw new IllegalArgumentException("Amount must be between 0 and 100");
+            throw new IllegalArgumentException("Ilość wody musi być w zakresie od 0 do 100");
         }
         this.amount = amount;
     }

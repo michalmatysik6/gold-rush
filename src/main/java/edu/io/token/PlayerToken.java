@@ -15,7 +15,7 @@ public final class PlayerToken extends Token {
 
     public PlayerToken(Player player, Board board, Board.Coords pos) {
         if (player == null || board == null || pos == null) {
-            throw new NullPointerException("Parameters cannot be null");
+            throw new NullPointerException("Gracz i plansza są wymagane do utworzenia żetonu");
         }
         this.player = player;
         this.board = board;
@@ -38,7 +38,7 @@ public final class PlayerToken extends Token {
 
     public void move(Move dir) {
         if (dir == null) {
-            throw new NullPointerException("Move direction cannot be null");
+            throw new NullPointerException("Wybierz kierunek ruchu");
         }
         
         int col = pos.col();

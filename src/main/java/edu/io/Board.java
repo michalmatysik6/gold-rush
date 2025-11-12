@@ -37,7 +37,7 @@ public class Board {
             throw new IllegalArgumentException("Nieprawidłowa pozycja: " + col + ", " + row);
         }
         if (token == null) {
-            throw new NullPointerException("Token cannot be null");
+            throw new NullPointerException("Żeton nie może być pusty");
         }
         grid[row][col] = token;
     }

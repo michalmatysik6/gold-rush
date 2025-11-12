@@ -17,14 +17,14 @@ public class Vitals {
 
     public void hydrate(int amount) {
         if (amount < 0) {
-            throw new IllegalArgumentException("Amount cannot be negative");
+            throw new IllegalArgumentException("Wartość nie może być ujemna");
         }
         hydration = Math.min(100, hydration + amount);
     }
 
     public void dehydrate(int amount) {
         if (amount < 0) {
-            throw new IllegalArgumentException("Amount cannot be negative");
+            throw new IllegalArgumentException("Wartość nie może być ujemna");
         }
         int newHydration = Math.max(0, hydration - amount);
         hydration = newHydration;
@@ -39,6 +39,6 @@ public class Vitals {
     }
 
     public void setOnDeathHandler(Runnable callback) {
-        this.onDeathCallback = Objects.requireNonNull(callback, "callback cannot be null");
+        this.onDeathCallback = Objects.requireNonNull(callback, "Funkcja obsługi zdarzenia jest wymagana");
     }
 }

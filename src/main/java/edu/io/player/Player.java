@@ -16,7 +16,7 @@ public class Player {
 
     public void assignToken(PlayerToken token) {
         if (token == null) {
-            throw new NullPointerException("Token cannot be null");
+            throw new NullPointerException("Token nie może być pusty");
         }
         this.token = token;
     }
@@ -31,10 +31,10 @@ public class Player {
 
     public void interactWithToken(Token token) {
         if (token == null) {
-            throw new NullPointerException("Token cannot be null");
+            throw new NullPointerException("Nie można wykonać akcji z pustym żetonem");
         }
         if (!vitals.isAlive()) {
-            throw new IllegalStateException("player is dead");
+            throw new IllegalStateException("Gracz nie żyje");
         }
 
         if (token instanceof PickaxeToken pickaxe) {

@@ -35,7 +35,7 @@ public class Game {
 
     public void join(Player player) {
         if (player == null) {
-            throw new NullPointerException("Player cannot be null");
+            throw new NullPointerException("Gracz nie może być pusty");
         }
         this.player = player;
         
