@@ -1,6 +1,5 @@
 package edu.io.token;
 
-import edu.io.Label;
 import edu.io.player.Repairable;
 import edu.io.player.Tool;
 

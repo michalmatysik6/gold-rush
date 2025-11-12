@@ -1,5 +1,4 @@
 import edu.io.Board;
-import edu.io.Label;
 import edu.io.player.Player;
 import edu.io.token.*;
 import org.junit.jupiter.api.Assertions;

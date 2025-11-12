@@ -7,6 +7,7 @@ import edu.io.token.AnvilToken;
 import edu.io.token.GoldToken;
 import edu.io.token.PickaxeToken;
 import edu.io.token.PlayerToken;
+import edu.io.token.WaterToken;
 
 public class Game {
     private final Board board = new Board();
@@ -28,10 +29,20 @@ public class Game {
         board.placeToken(1, 6, new GoldToken());
         board.placeToken(4, 4, new PickaxeToken());
         board.placeToken(6, 1, new AnvilToken());
+        board.placeToken(3, 3, new WaterToken());
+        board.placeToken(7, 5, new WaterToken(20));
     }
 
     public void join(Player player) {
+        if (player == null) {
+            throw new NullPointerException("Player cannot be null");
+        }
         this.player = player;
+        
+        player.vitals.setOnDeathHandler(() -> {
+            System.out.println("To koniec: pełne odwodnienie. Gracz nie może się poruszać.");
+        });
+
         try {
             Board.Coords pos = strategy.place(board);
             PlayerToken token = new PlayerToken(player, board, pos);
@@ -55,6 +66,8 @@ public class Game {
             board.display();
 
             while (true) {
+                System.out.println("Nawodnienie: " + player.vitals.hydration() + "%");
+                System.out.println("Zebrane złoto: " + player.gold.amount());
                 System.out.print("Ruch gracza: ");
                 String input = scanner.nextLine().trim().toLowerCase();
 
@@ -69,8 +82,9 @@ public class Game {
                 try {
                     player.token().move(move);
                     board.display();
-                    System.out.println("Zebrane złoto: " + player.gold.amount());
                 } catch (IllegalArgumentException e) {
+                    System.out.println("Błąd: " + e.getMessage());
+                } catch (IllegalStateException e) {
                     System.out.println("Błąd: " + e.getMessage());
                 }
             }

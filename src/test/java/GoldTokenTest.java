@@ -1,8 +1,8 @@
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
 import edu.io.token.GoldToken;
 import edu.io.token.PyriteToken;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 class GoldTokenTest {
 

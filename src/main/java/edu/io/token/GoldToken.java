@@ -1,7 +1,5 @@
 package edu.io.token;
 
-import edu.io.Label;
-
 public class GoldToken extends Token {
     private final double amount;
 

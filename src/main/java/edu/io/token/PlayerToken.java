@@ -1,7 +1,6 @@
 package edu.io.token;
 
 import edu.io.Board;
-import edu.io.Label;
 import edu.io.player.Player;
 
 public final class PlayerToken extends Token {
@@ -16,7 +15,7 @@ public final class PlayerToken extends Token {
 
     public PlayerToken(Player player, Board board, Board.Coords pos) {
         if (player == null || board == null || pos == null) {
-            throw new IllegalArgumentException();
+            throw new NullPointerException("Parameters cannot be null");
         }
         this.player = player;
         this.board = board;
@@ -38,6 +37,10 @@ public final class PlayerToken extends Token {
     public enum Move { LEFT, RIGHT, UP, DOWN, NONE }
 
     public void move(Move dir) {
+        if (dir == null) {
+            throw new NullPointerException("Move direction cannot be null");
+        }
+        
         int col = pos.col();
         int row = pos.row();
         
@@ -49,11 +52,11 @@ public final class PlayerToken extends Token {
             case NONE -> {}
         }
         
-        if (col < 0 || row < 0 || col >= board.size() || row >= board.size()) {
+        if (!board.isValidPos(col, row)) {
             throw new IllegalArgumentException("Nie można wyjść poza planszę");
         }
         
-        edu.io.token.Token encounteredToken = board.peekToken(col, row);
+        Token encounteredToken = board.peekToken(col, row);
         player.interactWithToken(encounteredToken);
         
         board.placeToken(pos.col(), pos.row(), new EmptyToken());

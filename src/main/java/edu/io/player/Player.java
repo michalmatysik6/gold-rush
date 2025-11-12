@@ -6,13 +6,18 @@ import edu.io.token.PickaxeToken;
 import edu.io.token.PlayerToken;
 import edu.io.token.PyriteToken;
 import edu.io.token.Token;
+import edu.io.token.WaterToken;
 
 public class Player {
     private PlayerToken token;
     public final Gold gold = new Gold();
+    public final Vitals vitals = new Vitals();
     private final Shed shed = new Shed();
 
     public void assignToken(PlayerToken token) {
+        if (token == null) {
+            throw new NullPointerException("Token cannot be null");
+        }
         this.token = token;
     }
 
@@ -25,12 +30,29 @@ public class Player {
     }
 
     public void interactWithToken(Token token) {
-        switch (token) {
-            case PickaxeToken pickaxe -> shed.add(pickaxe);
-            case PyriteToken pyrite -> handlePyriteInteraction(pyrite);
-            case GoldToken goldToken -> handleGoldInteraction(goldToken);
-            case AnvilToken anvil -> anvil.interact(this);
-            default -> {} // Ignoruj inne tokeny
+        if (token == null) {
+            throw new NullPointerException("Token cannot be null");
+        }
+        if (!vitals.isAlive()) {
+            throw new IllegalStateException("player is dead");
+        }
+
+        if (token instanceof PickaxeToken pickaxe) {
+            shed.add(pickaxe);
+            // Podnoszenie kilofa NIE zużywa wody
+        } else if (token instanceof PyriteToken pyrite) {
+            handlePyriteInteraction(pyrite);
+            vitals.dehydrate(VitalsValues.DEHYDRATION_GOLD);
+        } else if (token instanceof GoldToken goldToken) {
+            handleGoldInteraction(goldToken);
+            vitals.dehydrate(VitalsValues.DEHYDRATION_GOLD);
+        } else if (token instanceof AnvilToken anvil) {
+            anvil.interact(this);
+            vitals.dehydrate(VitalsValues.DEHYDRATION_ANVIL);
+        } else if (token instanceof WaterToken waterToken) {
+            vitals.hydrate(waterToken.amount());
+        } else {
+            vitals.dehydrate(VitalsValues.DEHYDRATION_MOVE);
         }
     }
 
